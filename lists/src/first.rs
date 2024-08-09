@@ -8,25 +8,25 @@ pub struct List {
     count: usize,
 }
 
-#[derive(Debug, PartialEq, Eq, Clone)]
+impl Drop for List {
+    fn drop(&mut self) {
+        while let Link::More(node) = replace(&mut self.head, Link::Empty) {
+            let node = replace(&mut self.head, node.next);
+            drop(node);
+        }
+    }
+}
+
+#[derive(Debug, PartialEq, Eq)]
 enum Link {
     Empty,
     More(Box<Node>),
 }
 
 #[derive(Debug, PartialEq, Eq)]
-struct Node {
-    elem: i32,
+pub struct Node {
+    pub elem: i32,
     next: Link,
-}
-
-impl Clone for Node {
-    fn clone(&self) -> Self {
-        Node {
-            elem: self.elem,
-            next: self.next.clone(),
-        }
-    }
 }
 
 impl List {
@@ -88,6 +88,26 @@ impl List {
         }
     }
 
+    fn _get(&self, index: usize) -> Option<&Box<Node>> {
+        if index >= self.count {
+            None
+        } else {
+            let mut i = 0;
+            let mut curr = &self.head;
+            while i < index {
+                match curr {
+                    Link::More(node) => curr = &node.next,
+                    Link::Empty => break,
+                }
+                i += 1;
+            }
+            match curr {
+                Link::More(node) => Some(node),
+                Link::Empty => None,
+            }
+        }
+    }
+
     pub fn pop(&mut self) -> Option<i32> {
         match replace(&mut self.head, Link::Empty) {
             Link::More(node) => {
@@ -98,4 +118,33 @@ impl List {
             Link::Empty => None,
         }
     }
+
+    pub fn len(&self) -> usize {
+        self.count
+    }
+
+    pub fn iter(&self) -> Iter {
+        Iter {
+            inner: self,
+            index: 0,
+        }
+    }
+}
+
+impl<'a> Iterator for Iter<'a> {
+    type Item = &'a Box<Node>;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        if self.inner.len() == 0 {
+            return None;
+        }
+        let ret = self.inner._get(self.index);
+        self.index += 1;
+        ret
+    }
+}
+
+pub struct Iter<'a> {
+    inner: &'a List,
+    index: usize,
 }

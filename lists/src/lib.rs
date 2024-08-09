@@ -13,6 +13,11 @@ mod tests {
         list.push(1);
         list.push_back(3);
         println!("{:?}", list);
+
+        for node in list.iter() {
+            println!("node: {}", node.elem);
+        }
+
         assert_eq!(list.pop(), Some(1));
         assert_eq!(list.pop(), Some(2));
         assert_eq!(list.pop(), Some(3));
