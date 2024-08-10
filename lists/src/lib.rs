@@ -8,7 +8,7 @@ mod tests {
 
     #[test]
     fn first_test() {
-        let mut list: List = List::new();
+        let mut list = List::<i32>::new();
         list.push_back(2);
         list.push(1);
         list.push_back(3);
@@ -17,10 +17,11 @@ mod tests {
         for node in list.iter() {
             println!("node: {}", node.elem);
         }
+        // we can reuse list, since it's not consumed
 
-        assert_eq!(list.pop(), Some(1));
-        assert_eq!(list.pop(), Some(2));
-        assert_eq!(list.pop(), Some(3));
-        println!("{:?}", list);
+        for elem in list {
+            println!("elem: {}", elem);
+        }
+        // we cannot reuse list, since the for loop consumes it
     }
 }
