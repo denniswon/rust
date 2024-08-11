@@ -1,6 +1,6 @@
 // second.rs
 
-use std::{fmt::Debug, mem::replace, ops::Deref};
+use std::{fmt::Debug, mem::replace};
 
 #[derive(Debug, PartialEq, Eq)]
 pub struct List<T> {
@@ -67,23 +67,7 @@ impl<T> List<T> {
     }
 
     pub fn get(&self, index: usize) -> Option<&T> {
-        if index >= self.count {
-            None
-        } else {
-            let mut i = 0;
-            let mut curr = &self.head;
-            while i < index {
-                match curr {
-                    Some(node) => curr = &node.next,
-                    None => break,
-                }
-                i += 1;
-            }
-            match curr {
-                Some(node) => Some(&node.elem),
-                None => None,
-            }
-        }
+        self._get(index).map(|node| &node.elem)
     }
 
     fn _get(&self, index: usize) -> Option<&Box<Node<T>>> {

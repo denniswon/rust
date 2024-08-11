@@ -69,23 +69,7 @@ impl<T: Copy> List<T> {
     }
 
     pub fn get(&self, index: usize) -> Option<T> {
-        if index >= self.count {
-            None
-        } else {
-            let mut i = 0;
-            let mut curr = &self.head;
-            while i < index {
-                match curr {
-                    Link::More(node) => curr = &node.next,
-                    Link::Empty => break,
-                }
-                i += 1;
-            }
-            match curr {
-                Link::More(node) => Some(node.elem),
-                Link::Empty => None,
-            }
-        }
+        self._get(index).map(|node| node.elem)
     }
 
     fn _get(&self, index: usize) -> Option<&Box<Node<T>>> {
