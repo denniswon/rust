@@ -1,7 +1,7 @@
 // third.rs
 // a persistent immutable singly-linked list
 
-use std::{fmt::Debug, rc::Rc};
+use std::{fmt::Debug, sync::Arc};
 
 #[derive(Debug, PartialEq, Eq)]
 pub struct List<T> {
@@ -12,8 +12,8 @@ impl<T> Drop for List<T> {
     fn drop(&mut self) {
         let mut head = self.head.take();
         while let Some(node) = head {
-            // try_unwrap returns the inner value, if the `Rc` has exactly one strong reference.
-            if let Ok(mut node) = Rc::try_unwrap(node) {
+            // try_unwrap returns the inner value, if the `Arc` has exactly one strong reference.
+            if let Ok(mut node) = Arc::try_unwrap(node) {
                 head = node.next.take();
             } else {
                 break;
@@ -22,7 +22,7 @@ impl<T> Drop for List<T> {
     }
 }
 
-type Link<T> = Option<Rc<Node<T>>>;
+type Link<T> = Option<Arc<Node<T>>>;
 
 #[derive(Debug, PartialEq, Eq)]
 pub struct Node<T> {
@@ -37,7 +37,7 @@ impl<T> List<T> {
 
     pub fn prepend(&self, elem: T) -> Self {
         List {
-            head: Some(Rc::new(Node {
+            head: Some(Arc::new(Node {
                 elem: elem,
                 next: self.head.clone(),
             })),
