@@ -23,8 +23,8 @@ use log::info;
 use std::mem::swap;
 
 pub fn min_operations(nums1: Vec<i32>, nums2: Vec<i32>) -> i32 {
-    let mut sum1 = nums1.iter().fold(0 as i32, |acc, x| acc.wrapping_add(*x));
-    let mut sum2 = nums2.iter().fold(0 as i32, |acc, x| acc.wrapping_add(*x));
+    let mut sum1 = nums1.iter().fold(0_i32, |acc, x| acc.wrapping_add(*x));
+    let mut sum2 = nums2.iter().fold(0_i32, |acc, x| acc.wrapping_add(*x));
 
     let mut nums1 = nums1.clone();
     nums1.sort();

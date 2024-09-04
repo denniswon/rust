@@ -26,8 +26,14 @@ type Link<T> = Option<Arc<Node<T>>>;
 
 #[derive(Debug, PartialEq, Eq)]
 pub struct Node<T> {
-    pub elem: T,
+    elem: T,
     next: Link<T>,
+}
+
+impl<T> Default for List<T> {
+    fn default() -> Self {
+        Self::new()
+    }
 }
 
 impl<T> List<T> {
@@ -38,7 +44,7 @@ impl<T> List<T> {
     pub fn prepend(&self, elem: T) -> Self {
         List {
             head: Some(Arc::new(Node {
-                elem: elem,
+                elem,
                 next: self.head.clone(),
             })),
         }
@@ -88,9 +94,9 @@ impl<T> List<T> {
         len
     }
 
-    pub fn iter<'a>(&'a self) -> ListIterator<'a, T> {
+    pub fn iter(&self) -> ListIterator<'_, T> {
         ListIterator {
-            next: self.head.as_ref().map(|node| &**node),
+            next: self.head.as_deref(),
         }
     }
 }

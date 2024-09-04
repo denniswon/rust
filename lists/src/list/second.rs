@@ -21,8 +21,14 @@ type Link<T> = Option<Box<Node<T>>>;
 
 #[derive(Debug, PartialEq, Eq)]
 pub struct Node<T> {
-    pub elem: T,
+    elem: T,
     next: Link<T>,
+}
+
+impl<T> Default for List<T> {
+    fn default() -> Self {
+        Self::new()
+    }
 }
 
 impl<T> List<T> {
@@ -35,7 +41,7 @@ impl<T> List<T> {
 
     pub fn push_back(&mut self, elem: T) {
         let item = Some(Box::new(Node {
-            elem: elem,
+            elem,
             next: None,
         }));
 
@@ -56,7 +62,7 @@ impl<T> List<T> {
 
     pub fn push(&mut self, elem: T) {
         let item = Box::new(Node {
-            elem: elem,
+            elem,
             // temporarily replace head with None, moving the old head into item next
             // take() is an idiom for mem::replace(&mut option, None)
             // take() takes the value of the option and replaces it with None
@@ -119,15 +125,15 @@ impl<T> List<T> {
         self.count
     }
 
-    pub fn iter<'a>(&'a self) -> ListIterator<'a, T> {
+    pub fn iter(&self) -> ListIterator<'_, T> {
         ListIterator {
-            next: self.head.as_ref().map(|node| &**node),
+            next: self.head.as_deref(),
         }
     }
 
-    pub fn iter_mut<'a>(&'a mut self) -> ListIterMut<'a, T> {
+    pub fn iter_mut(&mut self) -> ListIterMut<'_, T> {
         ListIterMut {
-            next: self.head.as_mut().map(|node| &mut **node),
+            next: self.head.as_deref_mut(),
         }
     }
 }

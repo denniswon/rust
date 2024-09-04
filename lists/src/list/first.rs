@@ -29,6 +29,12 @@ pub struct Node<T: Copy> {
     next: Link<T>,
 }
 
+impl<T: Copy> Default for List<T> {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl<T: Copy> List<T> {
     pub fn new() -> Self {
         List {
@@ -39,7 +45,7 @@ impl<T: Copy> List<T> {
 
     pub fn push_back(&mut self, elem: T) {
         let item = Link::More(Box::new(Node {
-            elem: elem,
+            elem,
             next: Link::Empty,
         }));
 
@@ -60,7 +66,7 @@ impl<T: Copy> List<T> {
 
     pub fn push(&mut self, elem: T) {
         let item = Box::new(Node {
-            elem: elem,
+            elem,
             // temporarily replace head with Link::Empty, moving the old head into item next
             next: replace(&mut self.head, Link::Empty),
         });

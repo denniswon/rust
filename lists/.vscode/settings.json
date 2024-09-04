@@ -1,3 +1,18 @@
 {
-  "editor.tabSize": 4
+  "editor.tabSize": 4,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit",
+    "source.addMissingImports": "explicit",
+    "source.organizeImports": "explicit",
+    "source.fixAll.markdownlint": "explicit"
+  },
+  "editor.formatOnSave": true,
+  "editor.formatOnSaveMode": "file",
+  "prettier.printWidth": 80,
+  "rust-analyzer.rustfmt.rangeFormatting.enable": true,
+  "rust-analyzer.rustfmt.extraArgs": ["max_width=80"],
+  "[rust]": {
+    "editor.defaultFormatter": "rust-lang.rust-analyzer",
+    "editor.formatOnSave": true
+  }
 }
