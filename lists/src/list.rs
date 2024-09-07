@@ -2,12 +2,11 @@ pub mod fifth;
 pub mod first;
 pub mod fourth;
 pub mod second;
+pub mod sixth;
 pub mod third;
 
 #[cfg(test)]
 mod tests {
-
-
 
     use super::*;
     use log::{debug, info};
@@ -173,7 +172,9 @@ mod tests {
         assert!(list.peek_front_mut().is_none());
         assert!(list.peek_back_mut().is_none());
 
-        list.push_front(1); list.push_front(2); list.push_front(3);
+        list.push_front(1);
+        list.push_front(2);
+        list.push_front(3);
 
         assert_eq!(&*list.peek_front().unwrap(), &3);
         assert_eq!(&mut *list.peek_front_mut().unwrap(), &mut 3);
@@ -182,7 +183,9 @@ mod tests {
 
         // into_iter
         let mut list = List::new();
-        list.push_front(1); list.push_front(2); list.push_front(3);
+        list.push_front(1);
+        list.push_front(2);
+        list.push_front(3);
 
         let mut iter = list.iter();
         assert_eq!(iter.next(), Some(3));
@@ -245,7 +248,9 @@ mod tests {
 
         assert!(list.peek() == Some(&3));
         list.push_back(6);
-        list.peek_mut().map(|x| *x *= 10);
+        if let Some(head) = list.peek_mut() {
+            *head *= 10;
+        }
         assert!(list.peek() == Some(&30));
         assert!(list.pop() == Some(30));
 
@@ -261,11 +266,92 @@ mod tests {
         assert_eq!(iter.next(), None);
 
         assert!(list.pop() == Some(400));
-        list.peek_mut().map(|x| *x *= 10);
+        if let Some(node) = list.peek_mut() {
+            *node *= 10;
+        }
         assert!(list.peek() == Some(&5000));
         list.push_back(7);
 
-    // Drop it on the ground and let the dtor exercise itself
+        // Drop it on the ground and let the dtor exercise itself
+    }
 
+    #[test]
+    fn sixth_test() {
+        use sixth::LinkedList;
+        init();
+
+        let mut list = LinkedList::new();
+
+        // Try to break an empty list
+        assert_eq!(list.len(), 0);
+        assert_eq!(list.pop_front(), None);
+        assert_eq!(list.len(), 0);
+
+        // Try to break a one item list
+        list.push_front(10);
+        assert_eq!(list.len(), 1);
+        assert_eq!(list.pop_front(), Some(10));
+        assert_eq!(list.len(), 0);
+        assert_eq!(list.pop_front(), None);
+        assert_eq!(list.len(), 0);
+
+        // Mess around
+        list.push_front(10);
+        assert_eq!(list.len(), 1);
+        list.push_front(20);
+        assert_eq!(list.len(), 2);
+        list.push_front(30);
+        assert_eq!(list.len(), 3);
+        assert_eq!(list.pop_front(), Some(30));
+        assert_eq!(list.len(), 2);
+        list.push_front(40);
+        assert_eq!(list.len(), 3);
+        assert_eq!(list.pop_front(), Some(40));
+        assert_eq!(list.len(), 2);
+        assert_eq!(list.pop_front(), Some(20));
+        assert_eq!(list.len(), 1);
+        assert_eq!(list.pop_front(), Some(10));
+        assert_eq!(list.len(), 0);
+        assert_eq!(list.pop_front(), None);
+        assert_eq!(list.len(), 0);
+        assert_eq!(list.pop_front(), None);
+        assert_eq!(list.len(), 0);
+
+        let mut list = LinkedList::new();
+
+        // Try to break an empty list
+        assert_eq!(list.len(), 0);
+        assert_eq!(list.pop_back(), None);
+        assert_eq!(list.len(), 0);
+
+        // Try to break a one item list
+        list.push_back(10);
+        assert_eq!(list.len(), 1);
+        assert_eq!(list.pop_back(), Some(10));
+        assert_eq!(list.len(), 0);
+        assert_eq!(list.pop_back(), None);
+        assert_eq!(list.len(), 0);
+
+        // Mess around
+        list.push_back(10);
+        assert_eq!(list.len(), 1);
+        list.push_back(20);
+        assert_eq!(list.len(), 2);
+        list.push_back(30);
+        assert_eq!(list.len(), 3);
+        assert_eq!(list.pop_back(), Some(30));
+        assert_eq!(list.len(), 2);
+        list.push_back(40);
+        assert_eq!(list.len(), 3);
+        assert_eq!(list.pop_back(), Some(40));
+        assert_eq!(list.len(), 2);
+        assert_eq!(list.pop_back(), Some(20));
+        assert_eq!(list.len(), 1);
+        assert_eq!(list.pop_back(), Some(10));
+        assert_eq!(list.len(), 0);
+        assert_eq!(list.pop_back(), None);
+        assert_eq!(list.len(), 0);
+        assert_eq!(list.pop_back(), None);
+        assert_eq!(list.len(), 0);
     }
 }
