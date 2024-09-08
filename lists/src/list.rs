@@ -1,8 +1,8 @@
 pub mod fifth;
 pub mod first;
 pub mod fourth;
+pub mod linked;
 pub mod second;
-pub mod sixth;
 pub mod third;
 
 #[cfg(test)]
@@ -273,85 +273,5 @@ mod tests {
         list.push_back(7);
 
         // Drop it on the ground and let the dtor exercise itself
-    }
-
-    #[test]
-    fn sixth_test() {
-        use sixth::LinkedList;
-        init();
-
-        let mut list = LinkedList::new();
-
-        // Try to break an empty list
-        assert_eq!(list.len(), 0);
-        assert_eq!(list.pop_front(), None);
-        assert_eq!(list.len(), 0);
-
-        // Try to break a one item list
-        list.push_front(10);
-        assert_eq!(list.len(), 1);
-        assert_eq!(list.pop_front(), Some(10));
-        assert_eq!(list.len(), 0);
-        assert_eq!(list.pop_front(), None);
-        assert_eq!(list.len(), 0);
-
-        // Mess around
-        list.push_front(10);
-        assert_eq!(list.len(), 1);
-        list.push_front(20);
-        assert_eq!(list.len(), 2);
-        list.push_front(30);
-        assert_eq!(list.len(), 3);
-        assert_eq!(list.pop_front(), Some(30));
-        assert_eq!(list.len(), 2);
-        list.push_front(40);
-        assert_eq!(list.len(), 3);
-        assert_eq!(list.pop_front(), Some(40));
-        assert_eq!(list.len(), 2);
-        assert_eq!(list.pop_front(), Some(20));
-        assert_eq!(list.len(), 1);
-        assert_eq!(list.pop_front(), Some(10));
-        assert_eq!(list.len(), 0);
-        assert_eq!(list.pop_front(), None);
-        assert_eq!(list.len(), 0);
-        assert_eq!(list.pop_front(), None);
-        assert_eq!(list.len(), 0);
-
-        let mut list = LinkedList::new();
-
-        // Try to break an empty list
-        assert_eq!(list.len(), 0);
-        assert_eq!(list.pop_back(), None);
-        assert_eq!(list.len(), 0);
-
-        // Try to break a one item list
-        list.push_back(10);
-        assert_eq!(list.len(), 1);
-        assert_eq!(list.pop_back(), Some(10));
-        assert_eq!(list.len(), 0);
-        assert_eq!(list.pop_back(), None);
-        assert_eq!(list.len(), 0);
-
-        // Mess around
-        list.push_back(10);
-        assert_eq!(list.len(), 1);
-        list.push_back(20);
-        assert_eq!(list.len(), 2);
-        list.push_back(30);
-        assert_eq!(list.len(), 3);
-        assert_eq!(list.pop_back(), Some(30));
-        assert_eq!(list.len(), 2);
-        list.push_back(40);
-        assert_eq!(list.len(), 3);
-        assert_eq!(list.pop_back(), Some(40));
-        assert_eq!(list.len(), 2);
-        assert_eq!(list.pop_back(), Some(20));
-        assert_eq!(list.len(), 1);
-        assert_eq!(list.pop_back(), Some(10));
-        assert_eq!(list.len(), 0);
-        assert_eq!(list.pop_back(), None);
-        assert_eq!(list.len(), 0);
-        assert_eq!(list.pop_back(), None);
-        assert_eq!(list.len(), 0);
     }
 }
